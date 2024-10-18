@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey Form</title>
+    <style>
+        /* Hide the token field */
+        .hidden-field {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <iframe id="surveyForm" src="https://docs.google.com/forms/d/e/1FAIpQLSdXajguD75jfqNXm7Ly834m-IoTTg_K3AE3u5FnhgkbgCg06Q/viewform?usp=pp_url&entry.1114183942=TOKEN" width="100%" height="800px"></iframe>
+    <script>
+        window.onload = function() {
+            let uniqueToken = localStorage.getItem('uniqueToken');
+
+            // If no token exists, generate a new random one and save it
+            if (!uniqueToken) {
+                uniqueToken = 'TOKEN_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('uniqueToken', uniqueToken);
+            }
+
+            const iframe = document.getElementById("surveyForm");
+            iframe.onload = function() {
+                const innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+                const tokenField = innerDoc.querySelector("input[name='entry.TOKEN_FIELD']");
+
+                if (tokenField) {
+                    tokenField.value = uniqueToken;
+                    tokenField.parentElement.classList.add('hidden-field');
+                }
+            };
+        };
+    </script>
+</body>
+</html>
